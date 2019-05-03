@@ -1,10 +1,55 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { MapView } from 'expo';
-import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator,createAppContainer } from 'react-navigation';
+import { StyleSheet,
+         Text,
+         View,
+         Platform,
+         TouchableOpacity,
+        } from 'react-native';
+import { MapView,
+         Marker,
+         Permissions,
+         Constants,
+         Location,
+       } from 'expo';
+import { createBottomTabNavigator,
+         createStackNavigator,
+         createAppContainer,
+        } from 'react-navigation';
 
 //ホーム画面
-class Home extends Component {
+class HomeScreen extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      latitude: null,
+      longitude: null,
+      message: '位置情報取得中'
+    }
+  }
+
+  componentDidMount() {
+    if (Platform.OS === 'android' && !Constants.isDevice) {
+      this.setState({
+        message: 'Androidエミュレーターでは動きません。実機で試してください',
+      })
+    } else {
+      this.getLocationAsync()
+    }
+  }
+
+  getLocationAsync = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        message: '位置情報のパーミッションの取得に失敗しました',
+      })
+      return
+    }
+    const lacation = await Location.getCurrentPositionAsync({});
+    this.setState({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+  }
+
   render() {
     return (
       <MapView
@@ -15,13 +60,20 @@ class Home extends Component {
           latitudeDelta: 0.025,
           longitudeDelta: 0.025,
         }}
-      />
+      >
+      <MapView.Marker
+      coordinate={{latitude: 33.88696,
+                   longitude: 130.88257,}}
+      title={"marker.title"}
+      description={"test"}
+    />
+      </MapView>
     );
   }
 }
 
 //場所検索画面
-class Place extends Component {
+class PlaceScreen extends Component {
   constructor(props) {
     super(props);
   }
@@ -34,7 +86,7 @@ class Place extends Component {
 }
 
 //条件設定画面
-class Conditions extends Component {
+class ConditionsScreen extends Component {
   render() {
     return (
       <View>
@@ -44,7 +96,7 @@ class Conditions extends Component {
 }
 
 //設定画面
-class Configuration extends Component {
+class ConfigurationScreen extends Component {
   render() {
     return (
       <View>
@@ -54,7 +106,7 @@ class Configuration extends Component {
 }
 
 //場所説明画面
-class Description extends Component {
+class DescriptionScreen extends Component {
   render() {
     return (
       <View>
@@ -63,32 +115,53 @@ class Description extends Component {
   }
 }
 
-const Navigation = createStackNavigator(
-  {
-    Home: { screen: Home },
-    Place: { screen: Place },
-    Conditions: { screen: Conditions },
-    Configuration: { screen: Configuration },
-    Description: { screen: Description }
-  },
-  {
-    initialRouteName: 'Home',
-  }
-);
-
-const AppContainer = createAppContainer(Navigation);
-
-export default class App extends React.Component {
+//予約一覧画面s
+class ReservationListScreen extends Component {
   render() {
     return (
-      <AppContainer
-        ref={nav => {
-        this.navigator = nav;
-        }}
-      />
+      <View>
+      </View>
     );
   }
 }
+
+const HomeStack = createStackNavigator({
+  Home: HomeScreen,
+  Place: PlaceScreen,
+  Conditions: ConditionsScreen,
+  Configuration: ConfigurationScreen,
+  Description: DescriptionScreen,
+  ReservationList: ReservationListScreen,
+});
+
+const ReservationListStack = createStackNavigator({
+  Home: HomeScreen,
+  Place: PlaceScreen,
+  Conditions: ConditionsScreen,
+  Configuration: ConfigurationScreen,
+  Description: DescriptionScreen,
+  ReservationList: ReservationListScreen,
+});
+
+const ConfigurationStack = createStackNavigator({
+  Home: HomeScreen,
+  Place: PlaceScreen,
+  Conditions: ConditionsScreen,
+  Configuration: ConfigurationScreen,
+  Description: DescriptionScreen,
+  ReservationList: ReservationListScreen,
+})
+
+export default createAppContainer(createBottomTabNavigator(
+  {
+    Home: HomeStack,
+    ReservationList: ReservationListStack,
+    Configuration: ConfigurationStack
+  },
+  {
+    /* Other configuration remains unchanged */
+  }
+));
 
 const styles = StyleSheet.create({
   container: {
