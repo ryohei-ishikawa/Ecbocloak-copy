@@ -24,7 +24,7 @@ class HomeScreen extends Component {
     this.state = {
       latitude: null,
       longitude: null,
-      message: '位置情報取得中'
+      message: '位置情報取得中',
     }
   }
 
@@ -46,8 +46,9 @@ class HomeScreen extends Component {
       })
       return
     }
-    const lacation = await Location.getCurrentPositionAsync({});
+    const location = await Location.getCurrentPositionAsync({});
     this.setState({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+    console.log(location);
   }
 
   render() {
@@ -66,7 +67,7 @@ class HomeScreen extends Component {
                    longitude: 130.88257,}}
       title={"marker.title"}
       description={"test"}
-    />
+      />
       </MapView>
     );
   }
