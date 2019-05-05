@@ -5,6 +5,7 @@ import { StyleSheet,
          Platform,
          TouchableOpacity,
          YellowBox,
+         ScrollView,
         } from 'react-native';
 import { MapView,
          Marker,
@@ -15,7 +16,9 @@ import { MapView,
 import { createBottomTabNavigator,
          createStackNavigator,
          createAppContainer,
+         KeyboardAvoidingView,
         } from 'react-navigation';
+import { SearchBar } from 'react-native-elements';
 
 //Debuggerどうたらの警告を非表示
 YellowBox.ignoreWarnings(['Remote debugger is in a background tab which may cause apps to perform slowly. Fix this by foregrounding the tab (or opening it in a separate window).']);
@@ -77,7 +80,7 @@ class HomeScreen extends Component {
       );
     }
     return (
-      <View style={{flex: 1, justifyContent: 'center'}}>
+      <View style={{flex: 1, justifyContent: 'center',alignItems: 'center'}}>
         <Text>{this.state.message}</Text>
       </View>
     )
@@ -111,8 +114,62 @@ class ConditionsScreen extends Component {
 class ConfigurationScreen extends Component {
   render() {
     return (
-      <View>
-      </View>
+      <ScrollView style={{flex:1}}>
+        <View style={styles.view}>
+          <Text style={{fontSize:13}}>アカウント</Text>
+        </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>プロフィール</Text>
+            </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>プロモコード</Text>
+            </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>クレジットカード編集</Text>
+            </View>
+        <View style={styles.view}>
+          <Text style={{fontSize:13}}>基本設定</Text>
+        </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>通知</Text>
+            </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>位置情報</Text>
+            </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>言語設定</Text>
+            </View>
+        <View style={styles.view}>
+          <Text style={{fontSize:13}}>ヘルプ</Text>
+        </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>よくあるご質問</Text>
+            </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>お預かりできないもの</Text>
+            </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>運営へ連絡する</Text>
+            </View>
+        <View style={styles.view}>
+          <Text style={{fontSize:13}}>このアプリについて</Text>
+        </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>お知らせ</Text>
+            </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>利用規約</Text>
+            </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>プライバシーポリシー</Text>
+            </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>運営会社</Text>
+            </View>
+            <View style={styles.view2}>
+              <Text style={{fontSize:15}}>運営へのフィードバック</Text>
+            </View>
+      </ScrollView>
     );
   }
 }
@@ -129,9 +186,20 @@ class DescriptionScreen extends Component {
 
 //予約一覧画面s
 class ReservationListScreen extends Component {
+    state = { search: '', };
+
+    updateSearch = search => {
+      this.setState({ search });
+    };
   render() {
+    const { search } = this.state;
     return (
       <View>
+        <SearchBar
+          placeholder="預け場所をさがす"
+          onChangeText={this.updateSearch}
+          value={search}
+        />
       </View>
     );
   }
@@ -180,4 +248,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  view: {
+    height:40,
+    padding:7,
+    backgroundColor: '#dcdcdc',
+    justifyContent: 'center'
+  },
+  view2: {
+    height:50,
+    padding:8,
+    justifyContent: 'center',
+    borderBottomColor: '#dcdcdc',
+    borderBottomWidth: 0.5
+  }
 });
