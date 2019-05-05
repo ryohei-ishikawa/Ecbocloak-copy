@@ -4,6 +4,7 @@ import { StyleSheet,
          View,
          Platform,
          TouchableOpacity,
+         YellowBox,
         } from 'react-native';
 import { MapView,
          Marker,
@@ -15,6 +16,9 @@ import { createBottomTabNavigator,
          createStackNavigator,
          createAppContainer,
         } from 'react-navigation';
+
+//Debuggerどうたらの警告を非表示
+YellowBox.ignoreWarnings(['Remote debugger is in a background tab which may cause apps to perform slowly. Fix this by foregrounding the tab (or opening it in a separate window).']);
 
 //ホーム画面
 class HomeScreen extends Component {
@@ -48,28 +52,35 @@ class HomeScreen extends Component {
     }
     const location = await Location.getCurrentPositionAsync({});
     this.setState({ latitude: location.coords.latitude, longitude: location.coords.longitude });
-    console.log(location);
   }
 
   render() {
+    if (this.state.latitude && this.state.longitude) {
+      return (
+        <MapView
+          style={{ flex: 1 }}
+          initialRegion={{
+            latitude: this.state.latitude,
+            longitude: this.state.longitude,
+            latitudeDelta: 0.00922,
+            longitudeDelta: 0.00521,
+          }}
+          showsUserLocation={true}
+        >
+        <MapView.Marker
+        coordinate={{latitude: 33.888351,
+                     longitude: 130.882071,}}
+        title={"コリドック駅前店"}
+        description={"マッサージ店"}
+        />
+        </MapView>
+      );
+    }
     return (
-      <MapView
-        style={{ flex: 1 }}
-        initialRegion={{
-          latitude: 33.88696,
-          longitude: 130.88257,
-          latitudeDelta: 0.025,
-          longitudeDelta: 0.025,
-        }}
-      >
-      <MapView.Marker
-      coordinate={{latitude: 33.88696,
-                   longitude: 130.88257,}}
-      title={"marker.title"}
-      description={"test"}
-      />
-      </MapView>
-    );
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <Text>{this.state.message}</Text>
+      </View>
+    )
   }
 }
 
