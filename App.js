@@ -18,7 +18,11 @@ import { createBottomTabNavigator,
          createAppContainer,
          KeyboardAvoidingView,
         } from 'react-navigation';
-import { SearchBar } from 'react-native-elements';
+import { SearchBar,
+         Card,
+         Icon,
+         Button,
+        } from 'react-native-elements';
 
 //Debuggerどうたらの警告を非表示
 YellowBox.ignoreWarnings(['Remote debugger is in a background tab which may cause apps to perform slowly. Fix this by foregrounding the tab (or opening it in a separate window).']);
@@ -89,15 +93,23 @@ class HomeScreen extends Component {
 
 //場所検索画面
 class PlaceScreen extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <View>
-      </View>
-    );
-  }
+  state = { search: '', };
+
+  updateSearch = search => {
+    this.setState({ search });
+  };
+render() {
+  const { search } = this.state;
+  return (
+    <View>
+      <SearchBar
+        placeholder="預け場所をさがす"
+        onChangeText={this.updateSearch}
+        value={search}
+      />
+    </View>
+  );
+}
 }
 
 //条件設定画面
@@ -184,23 +196,72 @@ class DescriptionScreen extends Component {
   }
 }
 
-//予約一覧画面s
+//予約一覧画面
 class ReservationListScreen extends Component {
-    state = { search: '', };
-
-    updateSearch = search => {
-      this.setState({ search });
-    };
   render() {
-    const { search } = this.state;
     return (
-      <View>
-        <SearchBar
-          placeholder="預け場所をさがす"
-          onChangeText={this.updateSearch}
-          value={search}
-        />
-      </View>
+      <ScrollView style={{flex:1}}>
+        <Card
+          title='お店の名前'
+          image={{uri: 'https://s3-ap-northeast-1.amazonaws.com/wp-recipebook/wp-content/uploads/2017/08/AdobeStock_95082119-1024x684.jpeg'}}>
+          <Text style={{marginBottom: 10}}>
+            お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細
+          </Text>
+          <Button
+            icon={<Icon name='code' color='#ffffff' />}
+            backgroundColor='#03A9F4'
+            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+            title='予約詳細を見る' />
+        </Card>
+        <Card
+          title='お店の名前'
+          image={{uri: 'http://miraishokudo.com/img/kitchen.jpg'}}>
+          <Text style={{marginBottom: 10}}>
+            お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細
+          </Text>
+          <Button
+            icon={<Icon name='code' color='#ffffff' />}
+            backgroundColor='#03A9F4'
+            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+            title='予約詳細を見る' />
+        </Card>
+        <Card
+          title='お店の名前'
+          image={{uri: 'https://image.gnst.jp/v1/pro/interior/thumb_interior15369.jpg'}}>
+          <Text style={{marginBottom: 10}}>
+            お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細
+          </Text>
+          <Button
+            icon={<Icon name='code' color='#ffffff' />}
+            backgroundColor='#03A9F4'
+            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+            title='予約詳細を見る' />
+        </Card>
+        <Card
+          title='お店の名前'
+          image={{uri: 'https://www.jyonetsu.jp/wp/wp-content/uploads/kariya-in.jpg'}}>
+          <Text style={{marginBottom: 10}}>
+            お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細
+          </Text>
+          <Button
+            icon={<Icon name='code' color='#ffffff' />}
+            backgroundColor='#03A9F4'
+            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+            title='予約詳細を見る' />
+        </Card>
+        <Card
+          title='お店の名前'
+          image={{uri: 'http://www.ja-tajima.or.jp/kinyu/amica/images/smallizakayatanigaki-thumb.jpg'}}>
+          <Text style={{marginBottom: 10}}>
+            お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細お店の詳細
+          </Text>
+          <Button
+            icon={<Icon name='code' color='#ffffff' />}
+            backgroundColor='#03A9F4'
+            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+            title='予約詳細を見る' />
+        </Card>
+      </ScrollView>
     );
   }
 }
